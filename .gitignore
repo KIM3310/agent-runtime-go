@@ -1,0 +1,9 @@
+*.test
+*.out
+*.exe
+/vendor/
+/dist/
+.idea/
+.vscode/
+go.work
+go.work.sum
