@@ -6,6 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Go 1.22+](https://img.shields.io/badge/go-1.22%2B-blue.svg)](https://go.dev/)
 
+Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-pack.md)
+
 ---
 
 ## Why
