@@ -116,7 +116,7 @@ func (p *Provider) Generate(ctx context.Context, req runtime.Request) (runtime.R
 	if err != nil {
 		return runtime.Response{}, fmt.Errorf("http call: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, _ := io.ReadAll(resp.Body)
 
