@@ -29,6 +29,10 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 
 ---
 
+## Commercialization Playbook
+
+- [Monetization and GTM playbook](docs/monetization-playbook.md) maps the repository to buyer segments, offer ladder, pricing hypotheses, proof gates, and risk boundaries.
+
 ## Why
 
 The JavaScript/TypeScript ecosystem has stage-pilot, LangChain.js, AI SDK. The Python ecosystem has stage-pilot, LangGraph, CrewAI. The Go ecosystem, as of April 2026, has fragmented options and few patterns focused on **reliability** and **determinism** at the tool-call boundary.
