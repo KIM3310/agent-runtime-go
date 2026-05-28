@@ -10,6 +10,18 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 
 ---
 
+## Product and Review Surface
+
+| Lens | Current answer |
+|---|---|
+| Buyer or user | Backend and platform teams that want agent execution inside Go services without a large framework. |
+| Commercial route | Embedded runtime package, provider adapter work, reliability audit, and integration support. |
+| Review signal | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
+| Safety boundary | Tool execution is bounded by schemas, timeouts, circuit breakers, and explicit provider adapters. |
+| Fast proof | `go test ./...`, [`docs/technical-review-pack.md`](docs/technical-review-pack.md), and the StagePilot design-family link. |
+
+---
+
 ## Why
 
 The JavaScript/TypeScript ecosystem has stage-pilot, LangChain.js, AI SDK. The Python ecosystem has stage-pilot, LangGraph, CrewAI. The Go ecosystem, as of April 2026, has fragmented options and few patterns focused on **reliability** and **determinism** at the tool-call boundary.
