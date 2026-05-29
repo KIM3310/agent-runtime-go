@@ -33,6 +33,11 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 
 - [Monetization and GTM playbook](docs/monetization-playbook.md) maps the repository to buyer segments, offer ladder, pricing hypotheses, proof gates, and risk boundaries.
 
+## Executive Proof Pack
+
+- [Reviewer evidence map](docs/reviewer-evidence-map.md) gives a 7-minute route through the strongest hiring, buyer, and architecture signals.
+- [Quality gate](docs/quality-gate.md) lists the local checks, CI surface, release boundary, and no-key/demo expectations for this repository.
+
 ## Why
 
 The JavaScript/TypeScript ecosystem has stage-pilot, LangChain.js, AI SDK. The Python ecosystem has stage-pilot, LangGraph, CrewAI. The Go ecosystem, as of April 2026, has fragmented options and few patterns focused on **reliability** and **determinism** at the tool-call boundary.
