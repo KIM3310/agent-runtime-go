@@ -18,13 +18,13 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 | Commercial route | Embedded runtime package, provider adapter work, reliability audit, and integration support. |
 | Review signal | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
 | Safety boundary | Tool execution is bounded by schemas, timeouts, circuit breakers, and explicit provider adapters. |
-| Fast proof | `go test ./...`, [`docs/technical-review-pack.md`](docs/technical-review-pack.md), and the StagePilot design-family link. |
+| Fast proof | `make verify`, [`docs/technical-review-pack.md`](docs/technical-review-pack.md), and the StagePilot design-family link. |
 
 ## Reviewer Fast Path
 
 - **First minute:** Read the runner interface, provider adapters, and tool boundary behavior before examples.
 - **Local demo:** Run the quick-start snippet with a provider key, or inspect deterministic tests when no key is available.
-- **Verification:** Run `go test ./...`; benchmark alignment lives under `go test -v -run TestAgentOrchestrationBenchmark ./tests/`.
+- **Verification:** Run `make verify`; benchmark alignment lives under `go test -v -run TestAgentOrchestrationBenchmark ./tests/`.
 - **Commercial read:** Position it as an embeddable Go runtime plus reliability/integration support for platform teams.
 
 ---
