@@ -10,6 +10,13 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 
 ---
 
+## Three-Minute Proof
+
+1. Inspect the runner, tool schema, retry, and provider boundaries.
+2. Run `make verify` to execute Go tests and repository validation.
+3. Check timeout, retry, and deterministic-tool behavior before adding providers.
+4. Read it as the compact Go companion to `stage-pilot`, not a broad framework.
+
 ## Product and Review Surface
 
 | Lens | Current answer |
