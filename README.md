@@ -1,5 +1,10 @@
 # agent-runtime-go
 
+## Live Demo
+
+- [Open the public GitHub Pages demo](https://kim3310.github.io/agent-runtime-go/)
+- Scope: credential-free, synthetic-data demo for reviewers and evaluators.
+
 > A minimal, production-grade LLM agent orchestration runtime in Go. Deterministic tool-calling, retry with backoff, pluggable LLM providers, streaming-ready. Companion to [stage-pilot](https://github.com/KIM3310/stage-pilot) (TypeScript) in the same design family.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/KIM3310/agent-runtime-go.svg)](https://pkg.go.dev/github.com/KIM3310/agent-runtime-go)
