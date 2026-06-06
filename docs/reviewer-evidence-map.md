@@ -47,9 +47,9 @@ Use this page as the short path through the repository. It keeps the review grou
 
 | Possible offer | Working scope assumption |
 |---|---|
-| Embedded runtime support | $1k-$5k support package |
-| Provider adapter implementation | $8k-$30k integration |
-| Reliability audit for Go agent services | $2k-$6k/month maintenance |
+| Embedded runtime support | Scope after buyer intake |
+| Provider adapter implementation | Scope after buyer intake |
+| Reliability audit for Go agent services | Scope after buyer intake |
 
 ## Boundaries
 

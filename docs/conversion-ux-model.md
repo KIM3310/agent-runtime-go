@@ -50,8 +50,8 @@ This note specializes the repository for service launch. It combines product str
 ## Conversion Path
 
 - Free proof: runnable sample, benchmark, or package install.
-- Paid entry: Embedded runtime support ($1k-$5k support package) tied to one integration or reliability question.
-- Expansion: Provider adapter implementation ($8k-$30k integration) and Reliability audit for Go agent services ($2k-$6k/month maintenance) after internal adoption starts.
+- Paid entry: Embedded runtime support (scope after buyer intake) tied to one integration or reliability question.
+- Expansion: Provider adapter implementation (scope after buyer intake) and Reliability audit for Go agent services (scope after buyer intake) after internal adoption starts.
 
 ## Scope Frame
 

@@ -12,7 +12,7 @@ This is the buyer-ready version of the repository. It turns the technical proof 
 | Buyer | Go backend/platform teams embedding agent execution inside services. |
 | Pain wedge | Compact Go-native agent runtime with bounded tool execution and provider adapters. |
 | Front-door offer | Embedded runtime support |
-| Entry scope | $1k-$5k support package |
+| Entry scope | Scope after buyer intake |
 | Proof before pitch | go test ./... passes |
 | Next buyer action | Review one proof artifact, then choose diagnostic, workshop, pilot, support, or revival path. |
 
@@ -20,9 +20,9 @@ This is the buyer-ready version of the repository. It turns the technical proof 
 
 | Offer | Scope assumption | Buyer-facing scope |
 |---|---|---|
-| Embedded runtime support | $1k-$5k support package | Publish minimal Go example |
-| Provider adapter implementation | $8k-$30k integration | Create adapter checklist |
-| Reliability audit for Go agent services | $2k-$6k/month maintenance | Offer runtime audit |
+| Embedded runtime support | Scope after buyer intake | Publish minimal Go example |
+| Provider adapter implementation | Scope after buyer intake | Create adapter checklist |
+| Reliability audit for Go agent services | Scope after buyer intake | Offer runtime audit |
 
 ## Close Path
 
