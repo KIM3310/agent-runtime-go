@@ -43,13 +43,13 @@ Use this page as the short path through the repository. It keeps the review grou
 - Technical review pack is current
 - Benchmark path is documented
 
-## Commercial Notes
+## Review Notes
 
 | Possible offer | Working scope assumption |
 |---|---|
-| Embedded runtime support | Scope after buyer intake |
-| Provider adapter implementation | Scope after buyer intake |
-| Reliability audit for Go agent services | Scope after buyer intake |
+| Embedded runtime support | Scope after reviewer intake |
+| Provider adapter implementation | Scope after reviewer intake |
+| Reliability audit for Go agent services | Scope after reviewer intake |
 
 ## Boundaries
 
