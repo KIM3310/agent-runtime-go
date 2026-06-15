@@ -3,7 +3,7 @@
 ## Live Demo
 
 - [Open the public GitHub Pages demo](https://kim3310.github.io/agent-runtime-go/)
-- Scope: credential-free, synthetic-data demo for reviewers and evaluators.
+- Scope: credential-free, synthetic-data demo for technical readers and evaluators.
 
 > A minimal, production-grade LLM agent orchestration runtime in Go. Deterministic tool-calling, retry with backoff, pluggable LLM providers, streaming-ready. Companion to [stage-pilot](https://github.com/KIM3310/stage-pilot) (TypeScript) in the same design family.
 
@@ -11,7 +11,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Go 1.22+](https://img.shields.io/badge/go-1.22%2B-blue.svg)](https://go.dev/)
 
-Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-pack.md)
+Architecture pack: [`docs/architecture-pack.md`](docs/architecture-pack.md)
 
 ---
 
@@ -22,17 +22,17 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 3. Check timeout, retry, and deterministic-tool behavior before adding providers.
 4. Read it as the compact Go companion to `stage-pilot`, not a broad framework.
 
-## Product and Review Surface
+## Product and System Surface
 
 | Lens | Current answer |
 |---|---|
 | Audience | Backend and platform teams that want agent execution inside Go services without a large framework. |
-| Review path | Validate the demo, README, architecture notes, and quality gate before deeper workflow review. |
-| Architecture signal | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
+| Architecture path | Validate the demo, README, architecture notes, and quality gate before deeper workflow architecture. |
+| System signal | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
 | Safety boundary | Tool execution is bounded by schemas, timeouts, circuit breakers, and explicit provider adapters. |
-| Fast proof | `make verify`, [`docs/technical-review-pack.md`](docs/technical-review-pack.md), and the StagePilot design-family link. |
+| Fast path | `make verify`, [`docs/architecture-pack.md`](docs/architecture-pack.md), and the StagePilot design-family link. |
 
-## Reviewer Fast Path
+## System Fast Path
 
 - **First minute:** Read the runner interface, provider adapters, and tool boundary behavior before examples.
 - **Local demo:** Run the quick-start snippet with a provider key, or inspect deterministic tests when no key is available.
@@ -42,11 +42,11 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 
 ## Service Launch Playbook
 
-- [Service launch playbook](docs/service-launch-playbook.md) maps the repository to review audiences, proof gates, operating boundaries, and risk controls.
+- [Service launch playbook](docs/service-launch-playbook.md) maps the repository to architecture audiences, operating gates, operating boundaries, and risk controls.
 
-## Review Notes
+## Architecture Notes
 
-- [Review guide](docs/reviewer-evidence-map.md) summarizes the project angle, first files to inspect, verification commands, and known boundaries.
+- [Architecture guide](docs/architecture-evidence-map.md) summarizes the project angle, first files to inspect, runtime commands, and known boundaries.
 - [Quality notes](docs/quality-gate.md) lists the local checks, CI surface, and release expectations for this repository.
 - [Enterprise readiness notes](docs/enterprise-readiness.md) outlines security, data, operations, integration, and handoff expectations.
 
@@ -273,7 +273,7 @@ This repository includes a neutral cloud and AI engineering blueprint that maps 
 
 ## Enterprise Productization
 
-- [Product operating model](docs/product-operating-model.md) defines the reviewer, trust boundary, trust boundary, operating checks, and service path for this repository.
+- [Product operating model](docs/product-operating-model.md) defines the technical reader, trust boundary, trust boundary, operating checks, and service path for this repository.
 
 ## System Architecture
 
