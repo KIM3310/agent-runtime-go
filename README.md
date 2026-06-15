@@ -28,7 +28,7 @@ Technical review pack: [`docs/technical-review-pack.md`](docs/technical-review-p
 |---|---|
 | Audience | Backend and platform teams that want agent execution inside Go services without a large framework. |
 | Review path | Validate the demo, README, architecture notes, and quality gate before deeper workflow review. |
-| Review signal | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
+| Architecture signal | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
 | Safety boundary | Tool execution is bounded by schemas, timeouts, circuit breakers, and explicit provider adapters. |
 | Fast proof | `make verify`, [`docs/technical-review-pack.md`](docs/technical-review-pack.md), and the StagePilot design-family link. |
 
@@ -274,6 +274,10 @@ This repository includes a neutral cloud and AI engineering blueprint that maps 
 ## Enterprise Productization
 
 - [Product operating model](docs/product-operating-model.md) defines the reviewer, trust boundary, trust boundary, operating checks, and service path for this repository.
+
+## System Architecture
+
+- [System architecture](docs/system-architecture.md) maps the runtime boundary, data/control flow, cloud or local deployment surface, and operating assumptions for this repository.
 
 ## Service Architecture
 
