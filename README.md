@@ -290,7 +290,7 @@ This repository includes a neutral cloud and AI engineering blueprint that maps 
 - Public entry: open-source runtime plus quickstart examples
 - Paid boundary: hosted trace console, team policy registry, and enterprise adapter support
 - Canonical URL: https://kim3310.github.io/agent-runtime-go/
-- Lead capture: mailto:ehdjs1351@gmail.com?subject=Agent%20Runtime%20Go%20private%20workspace&body=I%20am%20interested%20in%20hosted%20trace%20console%2C%20team%20policy%20registry%2C%20and%20enterprise%20adapter%20support%20for%20Agent%20Runtime%20Go.
+- Lead capture: https://github.com/KIM3310/agent-runtime-go/issues/new?template=service-inquiry.yml&title=Private+workspace+inquiry%3A+Agent+Runtime+Go
 - Machine-readable offer: [docs/service-offer.json](docs/service-offer.json)
 - Search growth implementation: [docs/search-growth-implementation.md](docs/search-growth-implementation.md)
 - Revenue architecture: [docs/revenue-architecture.md](docs/revenue-architecture.md)
