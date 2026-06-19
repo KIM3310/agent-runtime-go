@@ -3,7 +3,7 @@
 ## Live Demo
 
 - [Open the public GitHub Pages demo](https://kim3310.github.io/agent-runtime-go/)
-- Scope: credential-free, synthetic-data demo for technical readers and evaluators.
+- Scope: credential-free, synthetic-data demo for architecture inspection paths and evaluators.
 
 > A minimal, production-grade LLM agent orchestration runtime in Go. Deterministic tool-calling, retry with backoff, pluggable LLM providers, streaming-ready. Companion to [stage-pilot](https://github.com/KIM3310/stage-pilot) (TypeScript) in the same design family.
 
@@ -273,7 +273,7 @@ This repository includes a neutral cloud and AI engineering blueprint that maps 
 
 ## Enterprise Productization
 
-- [Product operating model](docs/product-operating-model.md) defines the technical reader, trust boundary, trust boundary, operating checks, and service path for this repository.
+- [Product operating model](docs/product-operating-model.md) defines the architecture inspection, trust boundary, trust boundary, operating checks, and service path for this repository.
 
 ## System Architecture
 
