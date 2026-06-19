@@ -1,0 +1,73 @@
+{
+  "name": "Agent Runtime Go",
+  "slug": "agent-runtime-go",
+  "canonical_url": "https://kim3310.github.io/agent-runtime-go/",
+  "repository_url": "https://github.com/KIM3310/agent-runtime-go",
+  "architecture_url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/system-architecture.md",
+  "revenue_architecture_url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md",
+  "lead_capture_url": "mailto:ehdjs1351@gmail.com?subject=Agent%20Runtime%20Go%20private%20workspace&body=I%20am%20interested%20in%20hosted%20trace%20console%2C%20team%20policy%20registry%2C%20and%20enterprise%20adapter%20support%20for%20Agent%20Runtime%20Go.",
+  "productized_offer": "small Go runtime for retries, validation, provider adapters, and inspectable execution traces",
+  "first_paid_sku": "hosted trace console, team policy registry, and enterprise adapter support",
+  "free_lead_magnet": "open-source runtime plus quickstart examples",
+  "search_positioning": {
+    "primary_query": "Agent Runtime Go small retries validation",
+    "secondary_queries": [
+      "Agent Runtime Go demo",
+      "Agent Runtime Go system architecture",
+      "Agent Runtime Go developer tool",
+      "small Go runtime for retries, validation, provider adapters, and inspectable execution traces service"
+    ],
+    "audience_intent": "Find a runnable demo, inspect the system architecture, and decide whether a private workspace or implementation package is useful."
+  },
+  "monetization_boundary": {
+    "free": "open-source runtime plus quickstart examples",
+    "paid": "hosted trace console, team policy registry, and enterprise adapter support",
+    "metering_hooks": [
+      "workspace_id",
+      "plan",
+      "quota_day",
+      "export_count",
+      "lead_source"
+    ],
+    "cost_guardrails": [
+      "static first",
+      "edge functions",
+      "customer API keys",
+      "cached AI outputs",
+      "synthetic public data"
+    ]
+  },
+  "structured_data": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Agent Runtime Go",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web, serverless, and local development environments",
+    "url": "https://kim3310.github.io/agent-runtime-go/",
+    "codeRepository": "https://github.com/KIM3310/agent-runtime-go",
+    "description": "Agent Runtime Go: small Go runtime for retries, validation, provider adapters, and inspectable execution traces. Free entry point: open-source runtime plus quickstart examples. Paid path: hosted trace console, team.",
+    "creator": {
+      "@type": "Person",
+      "name": "KIM3310",
+      "url": "https://github.com/KIM3310"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "open-source runtime plus quickstart examples",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://kim3310.github.io/agent-runtime-go/"
+      },
+      {
+        "@type": "Offer",
+        "name": "hosted trace console, team policy registry, and enterprise adapter support",
+        "availability": "https://schema.org/LimitedAvailability",
+        "url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md"
+      }
+    ],
+    "isAccessibleForFree": true,
+    "keywords": "agent-runtime-go, Agent, Runtime, small, runtime, retries, validation, provider, adapters, inspectable, execution, traces, hosted, trace, console, policy, registry, enterprise, adapter, support, open-source, quickstart, examples"
+  }
+}

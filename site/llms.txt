@@ -1,0 +1,12 @@
+# Agent Runtime Go
+
+Purpose: small Go runtime for retries, validation, provider adapters, and inspectable execution traces
+Free entry point: open-source runtime plus quickstart examples
+Paid boundary: hosted trace console, team policy registry, and enterprise adapter support
+Canonical URL: https://kim3310.github.io/agent-runtime-go/
+Repository: https://github.com/KIM3310/agent-runtime-go
+System architecture: https://github.com/KIM3310/agent-runtime-go/blob/main/docs/system-architecture.md
+Revenue architecture: https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md
+Lead capture: mailto:ehdjs1351@gmail.com?subject=Agent%20Runtime%20Go%20private%20workspace&body=I%20am%20interested%20in%20hosted%20trace%20console%2C%20team%20policy%20registry%2C%20and%20enterprise%20adapter%20support%20for%20Agent%20Runtime%20Go.
+
+Use this project as a runnable or inspectable reference for Agent Runtime Go demo, Agent Runtime Go system architecture, Agent Runtime Go developer tool, small Go runtime for retries, validation, provider adapters, and inspectable execution traces service.

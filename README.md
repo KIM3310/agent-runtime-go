@@ -282,3 +282,17 @@ This repository includes a neutral cloud and AI engineering blueprint that maps 
 ## Service Architecture
 
 - [Service architecture](docs/service-architecture.md) defines the cloud resources, account information, cost controls, and production guardrails needed to turn this repo into a scoped service without publishing public financial assumptions.
+
+<!-- search-growth-readme:start -->
+
+## Search And Service Surface
+
+- Public entry: open-source runtime plus quickstart examples
+- Paid boundary: hosted trace console, team policy registry, and enterprise adapter support
+- Canonical URL: https://kim3310.github.io/agent-runtime-go/
+- Lead capture: mailto:ehdjs1351@gmail.com?subject=Agent%20Runtime%20Go%20private%20workspace&body=I%20am%20interested%20in%20hosted%20trace%20console%2C%20team%20policy%20registry%2C%20and%20enterprise%20adapter%20support%20for%20Agent%20Runtime%20Go.
+- Machine-readable offer: [docs/service-offer.json](docs/service-offer.json)
+- Search growth implementation: [docs/search-growth-implementation.md](docs/search-growth-implementation.md)
+- Revenue architecture: [docs/revenue-architecture.md](docs/revenue-architecture.md)
+
+<!-- search-growth-readme:end -->
