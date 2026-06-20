@@ -19,6 +19,7 @@ type Provider struct {
 	apiKey     string
 	baseURL    string
 	model      string
+	headers    map[string]string
 	httpClient *http.Client
 }
 
@@ -32,11 +33,21 @@ func WithBaseURL(url string) Option {
 	return func(p *Provider) { p.baseURL = url }
 }
 
+func WithHeader(key string, value string) Option {
+	return func(p *Provider) {
+		if p.headers == nil {
+			p.headers = make(map[string]string)
+		}
+		p.headers[key] = value
+	}
+}
+
 func New(apiKey string, opts ...Option) *Provider {
 	p := &Provider{
 		apiKey:     apiKey,
 		baseURL:    DefaultBaseURL,
 		model:      "gpt-4o",
+		headers:    map[string]string{},
 		httpClient: &http.Client{Timeout: 60 * time.Second},
 	}
 	for _, opt := range opts {
@@ -48,23 +59,23 @@ func New(apiKey string, opts ...Option) *Provider {
 func (p *Provider) Name() string { return "openai" }
 
 type chatRequest struct {
-	Model       string         `json:"model"`
-	Messages    []chatMessage  `json:"messages"`
-	Tools       []openAITool   `json:"tools,omitempty"`
-	MaxTokens   int            `json:"max_tokens,omitempty"`
-	Temperature float32        `json:"temperature"`
+	Model       string        `json:"model"`
+	Messages    []chatMessage `json:"messages"`
+	Tools       []openAITool  `json:"tools,omitempty"`
+	MaxTokens   int           `json:"max_tokens,omitempty"`
+	Temperature float32       `json:"temperature"`
 }
 
 type chatMessage struct {
-	Role       string         `json:"role"`
-	Content    string         `json:"content,omitempty"`
+	Role       string           `json:"role"`
+	Content    string           `json:"content,omitempty"`
 	ToolCalls  []openAIToolCall `json:"tool_calls,omitempty"`
-	ToolCallID string         `json:"tool_call_id,omitempty"`
+	ToolCallID string           `json:"tool_call_id,omitempty"`
 }
 
 type openAITool struct {
-	Type     string              `json:"type"`
-	Function openAIToolFunction  `json:"function"`
+	Type     string             `json:"type"`
+	Function openAIToolFunction `json:"function"`
 }
 
 type openAIToolFunction struct {
@@ -111,6 +122,11 @@ func (p *Provider) Generate(ctx context.Context, req runtime.Request) (runtime.R
 	}
 	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
 	httpReq.Header.Set("Content-Type", "application/json")
+	for key, value := range p.headers {
+		if key != "" && value != "" {
+			httpReq.Header.Set(key, value)
+		}
+	}
 
 	resp, err := p.httpClient.Do(httpReq)
 	if err != nil {

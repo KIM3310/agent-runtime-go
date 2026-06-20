@@ -165,7 +165,7 @@ type Provider interface {
 
 Implementations:
 - `providers/anthropic` — Anthropic API (Claude Sonnet, Haiku, Opus)
-- `providers/openai` — OpenAI API (GPT-4o, o3)
+- `providers/openai` — OpenAI API and OpenAI-compatible endpoints such as OpenRouter
 - `providers/bedrock` — AWS Bedrock (Claude via Bedrock)
 - `providers/mock` — for testing; deterministic fixtures
 
@@ -225,7 +225,7 @@ Typed tools generate the JSON Schema at compile time via `go generate`.
 ## Running the benchmark
 
 ```bash
-# Requires ANTHROPIC_API_KEY or OPENAI_API_KEY
+# Requires ANTHROPIC_API_KEY, OPENAI_API_KEY, or OPENROUTER_API_KEY
 go test -v -run TestAgentOrchestrationBenchmark ./tests/
 
 # Against the formal benchmark suite

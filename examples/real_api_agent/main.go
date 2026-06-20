@@ -4,6 +4,7 @@
 //
 //	ANTHROPIC_API_KEY=sk-... go run ./examples/real_api_agent -provider anthropic
 //	OPENAI_API_KEY=sk-...    go run ./examples/real_api_agent -provider openai
+//	export OPENROUTER_API_KEY before using -provider openrouter
 package main
 
 import (
@@ -20,7 +21,7 @@ import (
 )
 
 func main() {
-	providerName := flag.String("provider", "anthropic", "anthropic or openai")
+	providerName := flag.String("provider", "anthropic", "anthropic, openai, or openrouter")
 	prompt := flag.String("prompt", "What is the weather in Seoul and Tokyo?", "user prompt")
 	flag.Parse()
 
@@ -38,6 +39,22 @@ func main() {
 			log.Fatal("OPENAI_API_KEY required")
 		}
 		provider = openai.New(key)
+	case "openrouter":
+		key := os.Getenv("OPENROUTER_API_KEY")
+		if key == "" {
+			log.Fatal("OPENROUTER_API_KEY required")
+		}
+		model := os.Getenv("OPENROUTER_MODEL")
+		if model == "" {
+			model = "qwen/qwen3-coder"
+		}
+		provider = openai.New(
+			key,
+			openai.WithBaseURL("https://openrouter.ai/api/v1"),
+			openai.WithModel(model),
+			openai.WithHeader("HTTP-Referer", "https://kim3310.github.io/agent-runtime-go/"),
+			openai.WithHeader("X-OpenRouter-Title", "agent-runtime-go"),
+		)
 	default:
 		log.Fatalf("unknown provider: %s", *providerName)
 	}
