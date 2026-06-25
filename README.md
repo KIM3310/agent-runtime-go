@@ -75,6 +75,17 @@ Given a user prompt and a set of tools:
 
 ## Quick start
 
+### Verify the runtime
+
+```bash
+git clone https://github.com/KIM3310/agent-runtime-go.git
+cd agent-runtime-go
+make verify
+
+# If Go is installed outside PATH:
+make GO=/path/to/go verify
+```
+
 ```go
 package main
 
