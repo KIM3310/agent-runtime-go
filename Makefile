@@ -1,7 +1,7 @@
 .SHELLFLAGS := -eu -o pipefail -c
 
 GO ?= go
-GO_MIN_VERSION := 1.22
+GO_MIN_VERSION := 1.26.5
 
 .PHONY: check-go test verify
 
@@ -11,11 +11,19 @@ check-go:
 		exit 1; \
 	fi
 	@version="$$("$(GO)" env GOVERSION)"; \
-	major_minor="$${version#go}"; \
-	major="$${major_minor%%.*}"; \
-	minor_rest="$${major_minor#*.}"; \
+	stable="$${version#go}"; \
+	case "$$stable" in \
+		*[!0-9.]*|*.*.*.*) echo "Stable Go $(GO_MIN_VERSION)+ is required; found $$version at $(GO)." >&2; exit 1 ;; \
+	esac; \
+	major="$${stable%%.*}"; \
+	minor_rest="$${stable#*.}"; \
 	minor="$${minor_rest%%.*}"; \
-	if [ "$$major" -lt 1 ] || { [ "$$major" -eq 1 ] && [ "$$minor" -lt 22 ]; }; then \
+	patch="$${minor_rest#*.}"; \
+	if [ "$$minor_rest" = "$$stable" ] || [ "$$patch" = "$$minor_rest" ] || [ -z "$$major" ] || [ -z "$$minor" ] || [ -z "$$patch" ]; then \
+		echo "Stable Go $(GO_MIN_VERSION)+ is required; found $$version at $(GO)." >&2; \
+		exit 1; \
+	fi; \
+	if [ "$$major" -lt 1 ] || { [ "$$major" -eq 1 ] && { [ "$$minor" -lt 26 ] || { [ "$$minor" -eq 26 ] && [ "$$patch" -lt 5 ]; }; }; }; then \
 		echo "Go $(GO_MIN_VERSION)+ is required; found $$version at $(GO)." >&2; \
 		exit 1; \
 	fi
