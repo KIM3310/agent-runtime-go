@@ -12,3 +12,9 @@ Resource route: https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-ru
 Commercial route: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers
 
 Use this project as a runnable or inspectable synthetic reference for Agent Runtime Go demo, Agent Runtime Go system architecture, Agent Runtime Go developer tool, and agent reliability audit review of Go tool-call runtime boundaries. The public demo is not a production deployment, SLA promise, or benchmark guarantee.
+# ADSENSE-PUBLICATION:START
+Editorial guide: https://agent-runtime-go.pages.dev/guide.html
+Architecture article: https://agent-runtime-go.pages.dev/architecture.html
+Verification article: https://agent-runtime-go.pages.dev/verification.html
+Publisher information: https://agent-runtime-go.pages.dev/publisher.html
+# ADSENSE-PUBLICATION:END
