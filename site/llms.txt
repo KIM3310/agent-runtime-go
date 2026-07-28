@@ -8,6 +8,7 @@ Repository: https://github.com/KIM3310/agent-runtime-go
 System architecture: https://github.com/KIM3310/agent-runtime-go/blob/main/docs/system-architecture.md
 Revenue architecture: https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md
 Lead capture: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry
+Resource route: https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/
 Commercial route: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers
 
 Use this project as a runnable or inspectable synthetic reference for Agent Runtime Go demo, Agent Runtime Go system architecture, Agent Runtime Go developer tool, and agent reliability audit review of Go tool-call runtime boundaries. The public demo is not a production deployment, SLA promise, or benchmark guarantee.
