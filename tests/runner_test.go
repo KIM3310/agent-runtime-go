@@ -2,11 +2,54 @@ package tests
 
 import (
 	"context"
+	"fmt"
+	"slices"
+	"strings"
 	"testing"
 
 	"github.com/KIM3310/agent-runtime-go/providers/mock"
 	"github.com/KIM3310/agent-runtime-go/runtime"
 )
+
+type requestCapturingProvider struct {
+	requests []runtime.Request
+}
+
+func (p *requestCapturingProvider) Name() string {
+	return "request-capturing-provider"
+}
+
+func (p *requestCapturingProvider) Generate(_ context.Context, req runtime.Request) (runtime.Response, error) {
+	p.requests = append(p.requests, req)
+	return runtime.Response{Text: "done", StopReason: "end_turn"}, nil
+}
+
+func TestToolSpecsAreDeterministicallySorted(t *testing.T) {
+	provider := &requestCapturingProvider{}
+	tools := []runtime.Tool{
+		{Name: "zeta", InputSchema: map[string]any{"type": "object"}},
+		{Name: "alpha", InputSchema: map[string]any{"type": "object"}},
+		{Name: "middle", InputSchema: map[string]any{"type": "object"}},
+	}
+	runner := runtime.NewRunner(provider, runtime.WithTools(tools))
+
+	for range 20 {
+		if _, err := runner.Run(context.Background(), "sort tools"); err != nil {
+			t.Fatalf("Run failed: %v", err)
+		}
+	}
+
+	want := []string{"alpha", "middle", "zeta"}
+	for i, req := range provider.requests {
+		got := make([]string, 0, len(req.Tools))
+		for _, spec := range req.Tools {
+			got = append(got, spec.Name)
+		}
+		if !slices.Equal(got, want) {
+			t.Fatalf("request %d tool order = %v, want %v", i, got, want)
+		}
+	}
+}
 
 func TestBasicRun(t *testing.T) {
 	responses := []runtime.Response{
@@ -42,7 +85,7 @@ func TestMultiStepToolUse(t *testing.T) {
 
 	tools := []runtime.Tool{
 		{
-			Name: "query_data",
+			Name: "query_sales_data",
 			InputSchema: map[string]any{
 				"type":       "object",
 				"properties": map[string]any{"query": map[string]any{"type": "string"}},
@@ -53,7 +96,7 @@ func TestMultiStepToolUse(t *testing.T) {
 			},
 		},
 		{
-			Name: "summarize",
+			Name: "summarize_trend",
 			InputSchema: map[string]any{
 				"type":       "object",
 				"properties": map[string]any{"data": map[string]any{"type": "string"}},
@@ -80,6 +123,64 @@ func TestMultiStepToolUse(t *testing.T) {
 	for i, tc := range result.ToolCalls {
 		if tc.Error != nil {
 			t.Errorf("tool call %d returned error: %v", i, tc.Error)
+		}
+	}
+}
+
+func TestStateMachineFinalAnswerIsSubstantiatedByToolOutputs(t *testing.T) {
+	provider := mock.NewStateMachine()
+
+	tools := []runtime.Tool{
+		{
+			Name: "query_sales_data",
+			InputSchema: map[string]any{
+				"type":       "object",
+				"properties": map[string]any{"query": map[string]any{"type": "string"}},
+				"required":   []string{"query"},
+			},
+			Handler: func(ctx context.Context, args map[string]any) (any, error) {
+				return []map[string]any{
+					{"quarter": "Q4 2023", "revenue_k_usd": 2410.0},
+					{"quarter": "Q1 2024", "revenue_k_usd": 2680.0},
+				}, nil
+			},
+		},
+		{
+			Name: "summarize_trend",
+			InputSchema: map[string]any{
+				"type":       "object",
+				"properties": map[string]any{"data": map[string]any{"type": "string"}},
+				"required":   []string{"data"},
+			},
+			Handler: func(ctx context.Context, args map[string]any) (any, error) {
+				before := 2410.0
+				after := 2680.0
+				change := after - before
+				pct := change / before * 100
+				return fmt.Sprintf("Revenue increased by %.1f%%, a change of $%.1fk.", pct, change), nil
+			},
+		},
+	}
+
+	runner := runtime.NewRunner(provider, runtime.WithTools(tools), runtime.WithMaxSteps(5))
+	result, err := runner.Run(context.Background(), "Compare revenue")
+	if err != nil {
+		t.Fatalf("Run failed: %v", err)
+	}
+	if len(result.ToolCalls) != 2 {
+		t.Fatalf("expected 2 tool calls, got %d", len(result.ToolCalls))
+	}
+
+	summary, ok := result.ToolCalls[1].Result.(string)
+	if !ok {
+		t.Fatalf("summarize_trend result = %#v, want string", result.ToolCalls[1].Result)
+	}
+	for _, expected := range []string{"revenue increased by 11.2%", "$270.0k"} {
+		if !strings.Contains(strings.ToLower(summary), strings.ToLower(expected)) {
+			t.Fatalf("summary %q does not contain %q", summary, expected)
+		}
+		if !strings.Contains(strings.ToLower(result.FinalAnswer), strings.ToLower(expected)) {
+			t.Fatalf("final answer %q does not contain %q", result.FinalAnswer, expected)
 		}
 	}
 }

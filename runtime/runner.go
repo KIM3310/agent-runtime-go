@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
 	"time"
 )
 
@@ -104,9 +105,9 @@ func (r *Runner) Run(ctx context.Context, prompt string) (*RunResult, error) {
 			if err != nil {
 				// Tool execution failed; feed error back to LLM
 				conversation = append(conversation, Message{
-					Role:         "tool",
-					Content:      fmt.Sprintf(`{"error": %q}`, err.Error()),
-					ToolCallID:   tc.ID,
+					Role:       "tool",
+					Content:    fmt.Sprintf(`{"error": %q}`, err.Error()),
+					ToolCallID: tc.ID,
 				})
 				continue
 			}
@@ -175,6 +176,9 @@ func (r *Runner) toolsAsSpecs() []ToolSpec {
 			InputSchema: t.InputSchema,
 		})
 	}
+	sort.Slice(specs, func(i, j int) bool {
+		return specs[i].Name < specs[j].Name
+	})
 	return specs
 }
 

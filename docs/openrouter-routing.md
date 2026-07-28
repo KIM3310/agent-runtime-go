@@ -6,7 +6,7 @@ This repository is prepared for OpenRouter as the hosted LLM gateway. OpenRouter
 
 | Lane | Model | Purpose |
 |---|---|---|
-| Primary | `qwen/qwen3-coder` | Go-native tool-call runtime examples and hosted trace console. |
+| Primary | `qwen/qwen3-coder` | Go-native tool-call runtime examples and synthetic audit trace review. |
 | Fallback | `openai/gpt-5.2-codex` | Higher reliability or alternate-provider path when the primary model is unavailable. |
 | Economy / demo | `openrouter/free` | Low-cost smoke tests, demos, and free-tier exploration with strict quotas. |
 

@@ -45,8 +45,8 @@ func (p *Provider) Reset() {
 }
 
 // StateMachineProvider is a more realistic mock that simulates a 3-step agent:
-// 1. Respond with a "query" tool call
-// 2. Respond with a "summarize" tool call
+// 1. Respond with a "query_sales_data" tool call
+// 2. Respond with a "summarize_trend" tool call
 // 3. Respond with a final answer
 type StateMachineProvider struct {
 	step int
@@ -69,8 +69,8 @@ func (p *StateMachineProvider) Generate(ctx context.Context, req runtime.Request
 			ToolCalls: []runtime.ToolCall{
 				{
 					ID:        "call_001",
-					Name:      "query_data",
-					Arguments: map[string]any{"query": "top departments"},
+					Name:      "query_sales_data",
+					Arguments: map[string]any{"query": "compare Q1 2024 with Q4 2023"},
 				},
 			},
 			InputTokens:  50,
@@ -83,7 +83,7 @@ func (p *StateMachineProvider) Generate(ctx context.Context, req runtime.Request
 			ToolCalls: []runtime.ToolCall{
 				{
 					ID:        "call_002",
-					Name:      "summarize",
+					Name:      "summarize_trend",
 					Arguments: map[string]any{"data": "from previous call"},
 				},
 			},
@@ -93,7 +93,7 @@ func (p *StateMachineProvider) Generate(ctx context.Context, req runtime.Request
 		}, nil
 	default:
 		return runtime.Response{
-			Text:         "Final answer: based on the data, Engineering is the highest-paid department.",
+			Text:         "Final answer: revenue increased by 11.2%, a change of $270.0k.",
 			ToolCalls:    nil,
 			InputTokens:  100,
 			OutputTokens: 40,

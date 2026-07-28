@@ -1,9 +1,11 @@
 # agent-runtime-go
 
-## Live Demo
+## Agent Reliability Audit Surface
 
 - [Open the public GitHub Pages demo](https://kim3310.github.io/agent-runtime-go/)
-- Scope: credential-free, synthetic-data demo for technical evaluators and platform teams.
+- Scope: credential-free, synthetic-data preview for technical evaluators and platform teams.
+- Private CTA: request a fixed-scope [Agent Reliability Audit](https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry) using the central private inquiry lane.
+- Demo boundary: the public page shows inspectable runtime boundaries and synthetic traces. It is not a hosted production runtime, customer-data review, SLA claim, or benchmark guarantee.
 
 > A minimal, production-grade LLM agent orchestration runtime in Go. Deterministic tool-calling, retry with backoff, pluggable LLM providers, streaming-ready. Companion to [stage-pilot](https://github.com/KIM3310/stage-pilot) (TypeScript) in the same design family.
 
@@ -297,9 +299,9 @@ MIT.
 ## Search And Service Surface
 
 - Public entry: open-source runtime plus quickstart examples
-- Paid boundary: hosted trace console, team policy registry, and enterprise adapter support
+- Paid boundary: fixed-scope Agent Reliability Audit for private scenario suites, trace review, failure taxonomy, provider scorecard, and prioritized remediation plan
 - Canonical URL: https://kim3310.github.io/agent-runtime-go/
-- Lead capture: https://github.com/KIM3310/agent-runtime-go/issues/new?template=service-inquiry.yml&title=Private+workspace+inquiry%3A+Agent+Runtime+Go
+- Lead capture: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry
 - Commercial route: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers
 - Machine-readable offer: [docs/service-offer.json](docs/service-offer.json)
 - Search growth implementation: [docs/search-growth-implementation.md](docs/search-growth-implementation.md)

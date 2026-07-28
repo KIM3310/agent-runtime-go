@@ -1,13 +1,13 @@
 # Agent Runtime Go
 
-Purpose: small Go runtime for retries, validation, provider adapters, and inspectable execution traces
+Purpose: agent reliability audit surface for Go agent runtimes, tool-call boundaries, retry behavior, provider adapters, and execution traces
 Free entry point: open-source runtime plus quickstart examples
-Paid boundary: hosted trace console, team policy registry, and enterprise adapter support
+Paid boundary: fixed-scope Agent Reliability Audit for private scenario suites, trace review, failure taxonomy, provider scorecard, and prioritized remediation plan
 Canonical URL: https://kim3310.github.io/agent-runtime-go/
 Repository: https://github.com/KIM3310/agent-runtime-go
 System architecture: https://github.com/KIM3310/agent-runtime-go/blob/main/docs/system-architecture.md
 Revenue architecture: https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md
-Lead capture: https://github.com/KIM3310/agent-runtime-go/issues/new?template=service-inquiry.yml&title=Private+workspace+inquiry%3A+Agent+Runtime+Go
+Lead capture: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry
 Commercial route: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers
 
-Use this project as a runnable or inspectable reference for Agent Runtime Go demo, Agent Runtime Go system architecture, Agent Runtime Go developer tool, small Go runtime for retries, validation, provider adapters, and inspectable execution traces service.
+Use this project as a runnable or inspectable synthetic reference for Agent Runtime Go demo, Agent Runtime Go system architecture, Agent Runtime Go developer tool, and agent reliability audit review of Go tool-call runtime boundaries. The public demo is not a production deployment, SLA promise, or benchmark guarantee.

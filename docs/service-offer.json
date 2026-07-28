@@ -5,23 +5,23 @@
   "repository_url": "https://github.com/KIM3310/agent-runtime-go",
   "architecture_url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/system-architecture.md",
   "revenue_architecture_url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md",
-  "lead_capture_url": "https://github.com/KIM3310/agent-runtime-go/issues/new?template=service-inquiry.yml&title=Private+workspace+inquiry%3A+Agent+Runtime+Go",
-  "productized_offer": "small Go runtime for retries, validation, provider adapters, and inspectable execution traces",
-  "first_paid_sku": "hosted trace console, team policy registry, and enterprise adapter support",
+  "lead_capture_url": "https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry",
+  "productized_offer": "agent reliability audit for Go agent runtimes, tool-call boundaries, retry behavior, provider adapters, and execution traces",
+  "first_paid_sku": "fixed-scope Agent Reliability Audit",
   "free_lead_magnet": "open-source runtime plus quickstart examples",
   "search_positioning": {
-    "primary_query": "Agent Runtime Go small retries validation",
+    "primary_query": "Agent Reliability Audit for Go agent runtimes",
     "secondary_queries": [
       "Agent Runtime Go demo",
       "Agent Runtime Go system architecture",
       "Agent Runtime Go developer tool",
-      "small Go runtime for retries, validation, provider adapters, and inspectable execution traces service"
+      "agent reliability audit for Go tool-call runtime boundaries"
     ],
     "audience_intent": "Find a runnable demo, inspect the system architecture, and decide whether a private workspace or implementation package is useful."
   },
   "monetization_boundary": {
     "free": "open-source runtime plus quickstart examples",
-    "paid": "hosted trace console, team policy registry, and enterprise adapter support",
+    "paid": "fixed-scope Agent Reliability Audit for private scenario suites, trace review, failure taxonomy, provider scorecard, and prioritized remediation plan",
     "metering_hooks": [
       "workspace_id",
       "plan",
@@ -45,7 +45,7 @@
     "operatingSystem": "Web, serverless, and local development environments",
     "url": "https://kim3310.github.io/agent-runtime-go/",
     "codeRepository": "https://github.com/KIM3310/agent-runtime-go",
-    "description": "Agent Runtime Go: small Go runtime for retries, validation, provider adapters, and inspectable execution traces. Free entry point: open-source runtime plus quickstart examples. Paid path: hosted trace console, team.",
+    "description": "Agent Runtime Go supports an agent reliability audit surface for Go tool-call runtimes, retry behavior, provider adapters, and execution traces. The public demo is credential-free and synthetic; private work uses the central Agent Reliability Audit inquiry lane.",
     "creator": {
       "@type": "Person",
       "name": "KIM3310",
@@ -62,30 +62,30 @@
       },
       {
         "@type": "Offer",
-        "name": "hosted trace console, team policy registry, and enterprise adapter support",
+        "name": "fixed-scope Agent Reliability Audit",
         "availability": "https://schema.org/LimitedAvailability",
-        "url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md"
+        "url": "https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry"
       }
     ],
     "isAccessibleForFree": true,
-    "keywords": "agent-runtime-go, Agent, Runtime, small, runtime, retries, validation, provider, adapters, inspectable, execution, traces, hosted, trace, console, policy, registry, enterprise, adapter, support, open-source, quickstart, examples"
+    "keywords": "agent-runtime-go, agent reliability audit, Go agent runtime, tool-call reliability, retry behavior, provider adapters, execution traces, synthetic demo, private scenario suite"
   },
   "commerce": {
     "gateway_url": "https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers",
-    "lane_id": "stagepilot-reliability-lab",
-    "lane_name": "StagePilot Reliability Lab",
+    "lane_id": "agent-reliability-audit",
+    "lane_name": "Agent Reliability Audit",
     "billing_mode": "one-time",
-    "price_unit": "reliability report pack from USD 500",
-    "fulfillment_kind": "private scenario suite, trace review, retry and parser findings, and provider scorecard",
+    "price_unit": "fixed audit from USD 1,500",
+    "fulfillment_kind": "private scenario suite, trace review, failure taxonomy, provider scorecard, and prioritized remediation plan",
     "risk_bucket": "standard-b2b",
     "checkout": {
-      "provider": "lemon-squeezy",
-      "status": "account-onboarding-required",
-      "fallback_url": "https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers"
+      "provider": null,
+      "status": "not-configured",
+      "fallback_url": "https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry"
     },
     "sponsorship": {
       "provider": "github-sponsors",
-      "eligible": true,
+      "eligible": false,
       "status": "sponsors-listing-not-configured"
     },
     "advertising": {

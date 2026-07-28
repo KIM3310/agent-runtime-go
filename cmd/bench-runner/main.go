@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -22,38 +23,43 @@ import (
 )
 
 type Fixture struct {
-	ID       string   `json:"id"`
-	Prompt   string   `json:"prompt"`
-	Keywords []string `json:"expected_keywords"`
+	ID            string   `json:"prompt_id"`
+	Prompt        string   `json:"user_message"`
+	ExpectedTools []string `json:"expected_tool_sequence"`
+	Keywords      []string `json:"answer_keywords"`
+	AnswerRegex   string   `json:"answer_regex"`
+	Difficulty    string   `json:"difficulty"`
 }
 
 type Result struct {
-	ID              string   `json:"id"`
-	Prompt          string   `json:"prompt"`
-	FinalAnswer     string   `json:"final_answer"`
-	KeywordsMatched int      `json:"keywords_matched"`
-	KeywordsTotal   int      `json:"keywords_total"`
-	Steps           int      `json:"steps"`
-	ToolCalls       int      `json:"tool_calls"`
-	LatencyMS       int64    `json:"latency_ms"`
-	TokensIn        int      `json:"tokens_in"`
-	TokensOut       int      `json:"tokens_out"`
-	Error           string   `json:"error,omitempty"`
-	ToolNames       []string `json:"tool_names"`
+	ID                string   `json:"id"`
+	Prompt            string   `json:"prompt"`
+	FinalAnswer       string   `json:"final_answer"`
+	KeywordsMatched   int      `json:"keywords_matched"`
+	KeywordsTotal     int      `json:"keywords_total"`
+	Steps             int      `json:"steps"`
+	ToolCalls         int      `json:"tool_calls"`
+	LatencyMS         int64    `json:"latency_ms"`
+	TokensIn          int      `json:"tokens_in"`
+	TokensOut         int      `json:"tokens_out"`
+	Error             string   `json:"error,omitempty"`
+	ToolNames         []string `json:"tool_names"`
+	ExpectedToolNames []string `json:"expected_tool_names"`
+	ToolCallErrors    int      `json:"tool_call_errors"`
 }
 
 type Summary struct {
-	Framework               string           `json:"framework"`
-	TotalRuns               int              `json:"total_runs"`
-	SuccessfulRuns          int              `json:"successful_runs"`
-	ToolCallSuccessRate     float64          `json:"tool_call_success_rate"`
-	FinalAnswerQuality      float64          `json:"final_answer_quality"`
-	LatencyP50MS            int64            `json:"latency_p50_ms"`
-	LatencyP95MS            int64            `json:"latency_p95_ms"`
-	LatencyP99MS            int64            `json:"latency_p99_ms"`
-	DeterministicReplayRate float64          `json:"deterministic_replay_rate"`
-	TimestampUTC            string           `json:"timestamp_utc"`
-	Runs                    []Result         `json:"runs,omitempty"`
+	Framework               string   `json:"framework"`
+	TotalRuns               int      `json:"total_runs"`
+	SuccessfulRuns          int      `json:"successful_runs"`
+	ToolCallSuccessRate     float64  `json:"tool_call_success_rate"`
+	FinalAnswerQuality      float64  `json:"final_answer_quality"`
+	LatencyP50MS            int64    `json:"latency_p50_ms"`
+	LatencyP95MS            int64    `json:"latency_p95_ms"`
+	LatencyP99MS            int64    `json:"latency_p99_ms"`
+	DeterministicReplayRate float64  `json:"deterministic_replay_rate"`
+	TimestampUTC            string   `json:"timestamp_utc"`
+	Runs                    []Result `json:"runs,omitempty"`
 }
 
 func main() {
@@ -90,12 +96,13 @@ func main() {
 		latency := time.Since(start).Milliseconds()
 
 		res := Result{
-			ID:        fx.ID,
-			Prompt:    fx.Prompt,
-			Steps:     result.StepCount,
-			LatencyMS: latency,
-			TokensIn:  result.TokensIn,
-			TokensOut: result.TokensOut,
+			ID:                fx.ID,
+			Prompt:            fx.Prompt,
+			ExpectedToolNames: append([]string(nil), fx.ExpectedTools...),
+			Steps:             result.StepCount,
+			LatencyMS:         latency,
+			TokensIn:          result.TokensIn,
+			TokensOut:         result.TokensOut,
 		}
 		if err != nil {
 			res.Error = err.Error()
@@ -104,6 +111,9 @@ func main() {
 			res.ToolCalls = len(result.ToolCalls)
 			for _, tc := range result.ToolCalls {
 				res.ToolNames = append(res.ToolNames, tc.ToolName)
+				if tc.Error != nil {
+					res.ToolCallErrors++
+				}
 			}
 			// Score keyword match
 			answerLower := strings.ToLower(result.FinalAnswer)
@@ -178,18 +188,18 @@ func summarize(results []Result) Summary {
 	successful := 0
 	totalKeywords := 0
 	matchedKeywords := 0
-	toolCallsOk := 0
-	toolCallsTotal := 0
+	exactToolSequences := 0
 	latencies := make([]int64, 0, len(results))
 
 	for _, r := range results {
 		latencies = append(latencies, r.LatencyMS)
+		if r.Error == "" && r.ToolCallErrors == 0 && slices.Equal(r.ToolNames, r.ExpectedToolNames) {
+			exactToolSequences++
+		}
 		if r.Error == "" {
 			successful++
 			matchedKeywords += r.KeywordsMatched
 			totalKeywords += r.KeywordsTotal
-			toolCallsOk += r.ToolCalls
-			toolCallsTotal += r.ToolCalls + 1 // +1 for some slack
 		}
 	}
 
@@ -197,9 +207,7 @@ func summarize(results []Result) Summary {
 	if totalKeywords > 0 {
 		summary.FinalAnswerQuality = float64(matchedKeywords) / float64(totalKeywords)
 	}
-	if toolCallsTotal > 0 {
-		summary.ToolCallSuccessRate = float64(toolCallsOk) / float64(toolCallsTotal)
-	}
+	summary.ToolCallSuccessRate = float64(exactToolSequences) / float64(len(results))
 	summary.DeterministicReplayRate = 1.0 // agent-runtime-go guarantees determinism
 
 	sort.Slice(latencies, func(i, j int) bool { return latencies[i] < latencies[j] })
@@ -213,7 +221,7 @@ func summarize(results []Result) Summary {
 func defaultTools() []runtime.Tool {
 	return []runtime.Tool{
 		{
-			Name: "query_data",
+			Name: "query_sales_data",
 			InputSchema: map[string]any{
 				"type":       "object",
 				"properties": map[string]any{"query": map[string]any{"type": "string"}},
@@ -221,20 +229,20 @@ func defaultTools() []runtime.Tool {
 			},
 			Handler: func(ctx context.Context, args map[string]any) (any, error) {
 				return map[string]any{"rows": []map[string]any{
-					{"name": "Engineering", "avg_salary": 145000},
-					{"name": "Sales", "avg_salary": 110000},
+					{"quarter": "Q4 2023", "revenue_k_usd": 2410.0},
+					{"quarter": "Q1 2024", "revenue_k_usd": 2680.0},
 				}}, nil
 			},
 		},
 		{
-			Name: "summarize",
+			Name: "summarize_trend",
 			InputSchema: map[string]any{
 				"type":       "object",
 				"properties": map[string]any{"data": map[string]any{"type": "string"}},
 				"required":   []string{"data"},
 			},
 			Handler: func(ctx context.Context, args map[string]any) (any, error) {
-				return "Engineering has the highest average salary among the listed departments.", nil
+				return "Revenue increased by 11.2%, a change of $270.0k from Q4 2023 to Q1 2024.", nil
 			},
 		},
 	}
