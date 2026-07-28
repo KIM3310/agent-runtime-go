@@ -3,7 +3,7 @@
 GO ?= go
 GO_MIN_VERSION := 1.26.5
 
-.PHONY: check-go test verify
+.PHONY: check-go test verify deploy-pages
 
 check-go:
 	@if ! command -v "$(GO)" >/dev/null 2>&1; then \
@@ -32,3 +32,6 @@ test: check-go
 	$(GO) test ./...
 
 verify: test
+
+deploy-pages:
+	npx --yes wrangler@latest pages deploy site --project-name agent-runtime-go

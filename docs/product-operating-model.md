@@ -2,7 +2,7 @@
 
 ## Public Demo
 
-- URL: https://kim3310.github.io/agent-runtime-go/
+- URL: https://agent-runtime-go.pages.dev/
 - Scope: credential-free synthetic demo surface for quick technical evaluation.
 
 Repository: `agent-runtime-go`

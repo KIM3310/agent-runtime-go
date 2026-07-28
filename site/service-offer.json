@@ -1,7 +1,7 @@
 {
   "name": "Agent Runtime Go",
   "slug": "agent-runtime-go",
-  "canonical_url": "https://kim3310.github.io/agent-runtime-go/",
+  "canonical_url": "https://agent-runtime-go.pages.dev/",
   "repository_url": "https://github.com/KIM3310/agent-runtime-go",
   "architecture_url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/system-architecture.md",
   "revenue_architecture_url": "https://github.com/KIM3310/agent-runtime-go/blob/main/docs/revenue-architecture.md",
@@ -43,7 +43,7 @@
     "name": "Agent Runtime Go",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Web, serverless, and local development environments",
-    "url": "https://kim3310.github.io/agent-runtime-go/",
+    "url": "https://agent-runtime-go.pages.dev/",
     "codeRepository": "https://github.com/KIM3310/agent-runtime-go",
     "description": "Agent Runtime Go supports an agent reliability audit surface for Go tool-call runtimes, retry behavior, provider adapters, and execution traces. The public demo is credential-free and synthetic; private work uses the central Agent Reliability Audit inquiry lane.",
     "creator": {
@@ -58,7 +58,7 @@
         "price": "0",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": "https://kim3310.github.io/agent-runtime-go/"
+        "url": "https://agent-runtime-go.pages.dev/"
       },
       {
         "@type": "Offer",

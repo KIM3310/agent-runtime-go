@@ -8,7 +8,7 @@ Free Go agent-runtime reliability checklist for retries, tools, and provider ada
 
 - Audience: Go engineers building deterministic agent runtimes
 - Central resource: https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/
-- Live system: https://kim3310.github.io/agent-runtime-go/
+- Live system: https://agent-runtime-go.pages.dev/
 - Advertising boundary: ads allowed only on public runtime explainer and checklist pages; trace viewers, tool execution, and diagnostics are ad-free
 - Current ad state: code-ready on the central resource; serving depends on Google AdSense site approval and consent policy.
 

@@ -6,7 +6,7 @@
   "audience": "Go engineers building deterministic agent runtimes",
   "public_resource": {
     "url": "https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/",
-    "live_demo": "https://kim3310.github.io/agent-runtime-go/",
+    "live_demo": "https://agent-runtime-go.pages.dev/",
     "readiness_checklist": [
       "Architecture Summary",
       "Runtime And Data Flow",

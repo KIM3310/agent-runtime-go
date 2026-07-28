@@ -2,7 +2,7 @@
 
 ## Agent Reliability Audit Surface
 
-- [Open the public GitHub Pages demo](https://kim3310.github.io/agent-runtime-go/)
+- [Open the public GitHub Pages demo](https://agent-runtime-go.pages.dev/)
 - Scope: credential-free, synthetic-data preview for technical evaluators and platform teams.
 - Private CTA: request a fixed-scope [Agent Reliability Audit](https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry) using the central private inquiry lane.
 - Demo boundary: the public page shows inspectable runtime boundaries and synthetic traces. It is not a hosted production runtime, customer-data review, SLA claim, or benchmark guarantee.
@@ -300,7 +300,7 @@ MIT.
 
 - Public entry: open-source runtime plus quickstart examples
 - Paid boundary: fixed-scope Agent Reliability Audit for private scenario suites, trace review, failure taxonomy, provider scorecard, and prioritized remediation plan
-- Canonical URL: https://kim3310.github.io/agent-runtime-go/
+- Canonical URL: https://agent-runtime-go.pages.dev/
 - Lead capture: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry
 - Resource route: https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/
 - Commercial route: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers

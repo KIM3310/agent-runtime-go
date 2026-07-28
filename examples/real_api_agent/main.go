@@ -52,7 +52,7 @@ func main() {
 			key,
 			openai.WithBaseURL("https://openrouter.ai/api/v1"),
 			openai.WithModel(model),
-			openai.WithHeader("HTTP-Referer", "https://kim3310.github.io/agent-runtime-go/"),
+			openai.WithHeader("HTTP-Referer", "https://agent-runtime-go.pages.dev/"),
 			openai.WithHeader("X-OpenRouter-Title", "agent-runtime-go"),
 		)
 	default:

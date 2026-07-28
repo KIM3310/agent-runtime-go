@@ -9,7 +9,7 @@ This repository now exposes a search-readable service surface in addition to the
 | Machine-readable offer | [docs/service-offer.json](./service-offer.json) |
 | Revenue architecture | [docs/revenue-architecture.md](./revenue-architecture.md) |
 | System architecture | [docs/system-architecture.md](./system-architecture.md) |
-| Public canonical URL | https://kim3310.github.io/agent-runtime-go/ |
+| Public canonical URL | https://agent-runtime-go.pages.dev/ |
 | Lead capture URL | https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry |
 | Repository resource route | https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/ |
 | Commercial route | https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers |

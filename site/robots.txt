@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kim3310.github.io/agent-runtime-go/sitemap.xml
+Sitemap: https://agent-runtime-go.pages.dev/sitemap.xml

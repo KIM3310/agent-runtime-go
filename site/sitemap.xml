@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kim3310.github.io/agent-runtime-go/</loc>
+    <loc>https://agent-runtime-go.pages.dev/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kim3310.github.io/agent-runtime-go/service-offer.json</loc>
+    <loc>https://agent-runtime-go.pages.dev/service-offer.json</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kim3310.github.io/agent-runtime-go/llms.txt</loc>
+    <loc>https://agent-runtime-go.pages.dev/privacy/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agent-runtime-go.pages.dev/terms/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agent-runtime-go.pages.dev/llms.txt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
