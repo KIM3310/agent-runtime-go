@@ -41,7 +41,7 @@ Use this page as the short path through the repository. It keeps the architectur
 - Go testable runtime surface
 - go test ./... passes
 - Architecture pack is current
-- Benchmark path is documented
+- Mock fixture-harness boundary is documented
 
 ## Architecture Notes
 
@@ -60,5 +60,5 @@ Use this page as the short path through the repository. It keeps the architectur
 ## Useful Metrics
 
 - Tool-call success
-- Timeout/circuit-breaker coverage
+- Retry, schema-validation, and timeout coverage
 - Integration time

@@ -77,7 +77,7 @@ type RunResult struct {
 	Error        error
 }
 
-// Provider is implemented by backends (Anthropic, OpenAI, Bedrock, mock).
+// Provider is implemented by backends such as Anthropic, OpenAI-compatible APIs, and mocks.
 type Provider interface {
 	Name() string
 	Generate(ctx context.Context, req Request) (Response, error)

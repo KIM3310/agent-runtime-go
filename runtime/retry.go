@@ -9,6 +9,8 @@ import (
 
 // RetryPolicy controls provider-call retry behavior.
 type RetryPolicy struct {
+	// MaxAttempts is the total number of provider calls, including the first call.
+	// Values below 1 are treated as one attempt.
 	MaxAttempts int
 	BaseDelay   time.Duration
 	MaxDelay    time.Duration

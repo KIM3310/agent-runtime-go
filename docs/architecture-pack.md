@@ -2,7 +2,7 @@
 
 ## System Boundary
 
-This repository provides a small Go runtime for deterministic agent execution. It is intentionally narrow: a provider produces candidate messages, the runner validates and executes allowed tools, and the loop stops on a final answer or configured limit.
+This repository provides a small Go runtime for inspectable agent execution. It is intentionally narrow: a provider produces candidate messages, the runner validates and executes allowed tools, and the loop stops on a final answer or configured limit. Deterministic mock fixtures make the control flow reproducible in tests; live model responses remain provider-dependent.
 
 ## Architecture Notes
 

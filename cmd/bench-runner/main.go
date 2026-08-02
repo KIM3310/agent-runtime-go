@@ -208,7 +208,9 @@ func summarize(results []Result) Summary {
 		summary.FinalAnswerQuality = float64(matchedKeywords) / float64(totalKeywords)
 	}
 	summary.ToolCallSuccessRate = float64(exactToolSequences) / float64(len(results))
-	summary.DeterministicReplayRate = 1.0 // agent-runtime-go guarantees determinism
+	// This harness always uses the deterministic mock provider. The value does not
+	// measure replay behavior from a live model API.
+	summary.DeterministicReplayRate = 1.0
 
 	sort.Slice(latencies, func(i, j int) bool { return latencies[i] < latencies[j] })
 	summary.LatencyP50MS = latencies[len(latencies)/2]

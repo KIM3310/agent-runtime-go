@@ -92,13 +92,14 @@ func (r *Runner) Run(ctx context.Context, prompt string) (*RunResult, error) {
 
 		// Execute each tool call
 		for _, tc := range toolCalls {
+			toolStartedAt := time.Now()
 			toolResult, err := r.executeTool(ctx, tc)
 			record := ToolCallRecord{
 				ToolName:  tc.Name,
 				Arguments: tc.Arguments,
 				Result:    toolResult,
 				Error:     err,
-				Duration:  time.Since(result.StartTime),
+				Duration:  time.Since(toolStartedAt),
 			}
 			result.ToolCalls = append(result.ToolCalls, record)
 
@@ -131,15 +132,25 @@ func (r *Runner) callProviderWithRetry(ctx context.Context, req Request) (Respon
 	var resp Response
 	var err error
 
-	for attempt := 0; attempt <= r.retryPolicy.MaxAttempts; attempt++ {
+	maxAttempts := r.retryPolicy.MaxAttempts
+	if maxAttempts < 1 {
+		maxAttempts = 1
+	}
+
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
 		resp, err = r.provider.Generate(ctx, req)
 		if err == nil {
 			return resp, nil
 		}
-		if !r.retryPolicy.IsRetryable(err) || attempt == r.retryPolicy.MaxAttempts {
+		retryable := r.retryPolicy.IsRetryable != nil && r.retryPolicy.IsRetryable(err)
+		if !retryable || attempt == maxAttempts {
 			return resp, err
 		}
-		delay := r.retryPolicy.Delay(attempt)
+		delay := r.retryPolicy.Delay(attempt - 1)
+		var rateLimitError *RateLimitError
+		if errors.As(err, &rateLimitError) && rateLimitError.RetryAfter > delay {
+			delay = rateLimitError.RetryAfter
+		}
 		r.logger.Warn("runtime.retry", "attempt", attempt, "delay", delay, "error", err)
 
 		select {

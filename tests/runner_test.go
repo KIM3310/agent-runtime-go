@@ -2,10 +2,12 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/KIM3310/agent-runtime-go/providers/mock"
 	"github.com/KIM3310/agent-runtime-go/runtime"
@@ -13,6 +15,39 @@ import (
 
 type requestCapturingProvider struct {
 	requests []runtime.Request
+}
+
+type failingProvider struct {
+	calls int
+	err   error
+}
+
+func (p *failingProvider) Name() string { return "failing-provider" }
+
+func (p *failingProvider) Generate(_ context.Context, _ runtime.Request) (runtime.Response, error) {
+	p.calls++
+	return runtime.Response{}, p.err
+}
+
+type delayedToolProvider struct {
+	calls int
+}
+
+func (p *delayedToolProvider) Name() string { return "delayed-tool-provider" }
+
+func (p *delayedToolProvider) Generate(_ context.Context, _ runtime.Request) (runtime.Response, error) {
+	p.calls++
+	if p.calls == 1 {
+		time.Sleep(60 * time.Millisecond)
+		return runtime.Response{
+			Text: "use tool",
+			ToolCalls: []runtime.ToolCall{
+				{ID: "call-1", Name: "quick_tool", Arguments: map[string]any{}},
+			},
+			StopReason: "tool_use",
+		}, nil
+	}
+	return runtime.Response{Text: "done", StopReason: "end_turn"}, nil
 }
 
 func (p *requestCapturingProvider) Name() string {
@@ -77,6 +112,80 @@ func TestBasicRun(t *testing.T) {
 	}
 	if result.TokensIn != 10 {
 		t.Errorf("expected 10 input tokens, got %d", result.TokensIn)
+	}
+}
+
+func TestRetryPolicyMaxAttemptsCountsTotalProviderCalls(t *testing.T) {
+	provider := &failingProvider{err: &runtime.APIStatusError{StatusCode: 503, Msg: "unavailable"}}
+	policy := runtime.RetryPolicy{
+		MaxAttempts: 3,
+		BaseDelay:   0,
+		MaxDelay:    0,
+		IsRetryable: func(error) bool { return true },
+	}
+	runner := runtime.NewRunner(provider, runtime.WithRetryPolicy(policy))
+
+	_, err := runner.Run(context.Background(), "retry")
+	if err == nil {
+		t.Fatal("expected provider error")
+	}
+	if provider.calls != 3 {
+		t.Fatalf("provider calls = %d, want 3 total attempts", provider.calls)
+	}
+}
+
+func TestNonRetryableProviderErrorIsNotRetried(t *testing.T) {
+	provider := &failingProvider{err: errors.New("invalid request")}
+	policy := runtime.RetryPolicy{
+		MaxAttempts: 5,
+		BaseDelay:   0,
+		MaxDelay:    0,
+		IsRetryable: func(error) bool { return false },
+	}
+	runner := runtime.NewRunner(provider, runtime.WithRetryPolicy(policy))
+
+	_, err := runner.Run(context.Background(), "do not retry")
+	if err == nil {
+		t.Fatal("expected provider error")
+	}
+	if provider.calls != 1 {
+		t.Fatalf("provider calls = %d, want 1", provider.calls)
+	}
+}
+
+func TestZeroRetryPolicyFallsBackToOneAttempt(t *testing.T) {
+	provider := &failingProvider{err: errors.New("invalid request")}
+	runner := runtime.NewRunner(provider, runtime.WithRetryPolicy(runtime.RetryPolicy{}))
+
+	_, err := runner.Run(context.Background(), "one attempt")
+	if err == nil {
+		t.Fatal("expected provider error")
+	}
+	if provider.calls != 1 {
+		t.Fatalf("provider calls = %d, want 1", provider.calls)
+	}
+}
+
+func TestToolCallDurationMeasuresOnlyToolExecution(t *testing.T) {
+	provider := &delayedToolProvider{}
+	tool := runtime.Tool{
+		Name:        "quick_tool",
+		InputSchema: map[string]any{"type": "object"},
+		Handler: func(context.Context, map[string]any) (any, error) {
+			return "ok", nil
+		},
+	}
+	runner := runtime.NewRunner(provider, runtime.WithTool(tool))
+
+	result, err := runner.Run(context.Background(), "measure tool")
+	if err != nil {
+		t.Fatalf("Run failed: %v", err)
+	}
+	if len(result.ToolCalls) != 1 {
+		t.Fatalf("tool call count = %d, want 1", len(result.ToolCalls))
+	}
+	if got := result.ToolCalls[0].Duration; got >= 30*time.Millisecond {
+		t.Fatalf("tool duration = %v; appears to include provider latency", got)
 	}
 }
 

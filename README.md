@@ -1,83 +1,34 @@
 # agent-runtime-go
 
-## Agent Reliability Audit Surface
-
-- [Open the public GitHub Pages demo](https://agent-runtime-go.pages.dev/)
-- Scope: credential-free, synthetic-data preview for technical evaluators and platform teams.
-- Private CTA: request a fixed-scope [Agent Reliability Audit](https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry) using the central private inquiry lane.
-- Demo boundary: the public page shows inspectable runtime boundaries and synthetic traces. It is not a hosted production runtime, customer-data review, SLA claim, or benchmark guarantee.
-
-> A minimal, production-grade LLM agent orchestration runtime in Go. Deterministic tool-calling, retry with backoff, pluggable LLM providers, streaming-ready. Companion to [stage-pilot](https://github.com/KIM3310/stage-pilot) (TypeScript) in the same design family.
+A small, auditable Go prototype for LLM tool orchestration. It keeps the control loop explicit: provider calls, JSON-schema validation, bounded retries, tool timeouts, and deterministic test fixtures.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/KIM3310/agent-runtime-go.svg)](https://pkg.go.dev/github.com/KIM3310/agent-runtime-go)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Go 1.26.5+](https://img.shields.io/badge/go-1.26.5%2B-blue.svg)](https://go.dev/)
 
-Architecture pack: [`docs/architecture-pack.md`](docs/architecture-pack.md)
-
----
-
-## Three-Minute Proof
-
-1. Inspect the runner, tool schema, retry, and provider boundaries.
-2. Run `make verify` to execute Go tests and repository validation.
-3. Check timeout, retry, and deterministic-tool behavior before adding providers.
-4. Read it as the compact Go companion to `stage-pilot`, not a broad framework.
+Public demo: [agent-runtime-go.pages.dev](https://agent-runtime-go.pages.dev/)
 
 ## System Overview
 
-| Lens | Current answer |
+| Area | Current implementation |
 |---|---|
-| Users | Backend and platform teams that want agent execution inside Go services without a large framework. |
-| Technical path | Validate the demo, README, architecture notes, and quality gate before deeper workflow review. |
-| System scope | Go-native runner, deterministic tool replay, retry/backoff, provider interface, and compact auditable core. |
-| Operating boundary | Tool execution is bounded by schemas, timeouts, circuit breakers, and explicit provider adapters. |
-| Evaluation path | `make verify`, [`docs/architecture-pack.md`](docs/architecture-pack.md), and the StagePilot design-family link. |
+| Runtime | Sequential agent loop with a configurable step limit and overall timeout |
+| Tool boundary | Name lookup, JSON-schema argument validation, and a 30-second execution timeout |
+| Provider resilience | Retryable 429/5xx errors with bounded exponential backoff and optional jitter |
+| Providers | Anthropic, OpenAI-compatible endpoints, and deterministic mock fixtures |
+| Diagnostics | Structured run result, token totals, per-tool duration, and injectable logger |
+| Verification | Go tests, deterministic fixtures, repository-surface checks, and CI |
+
+This is an inspectable reference implementation, not a hosted production runtime. The public demo and benchmark path use synthetic data and mock responses unless a caller explicitly supplies a provider key.
+
+## Three-Minute Proof
+
+1. Read [`runtime/runner.go`](runtime/runner.go) for the complete orchestration loop.
+2. Read [`runtime/retry.go`](runtime/retry.go) for the retry contract: `MaxAttempts` means total provider calls.
+3. Read [`tests/runner_test.go`](tests/runner_test.go) for step-limit, schema, retry, timing, and tool-order coverage.
+4. Run `make verify` with Go 1.26.5 or newer.
 
 ## Evaluation Path
-
-- **Start here:** Read the runner interface, provider adapters, and tool boundary behavior before examples.
-- **Local demo:** Run the quick-start snippet with a provider key, or inspect deterministic tests when no key is available.
-- **Checks:** Run `make verify`; benchmark alignment lives under `go test -v -run TestAgentOrchestrationBenchmark ./tests/`.
-
----
-
-## Service Launch Playbook
-
-- [Service launch playbook](docs/service-launch-playbook.md) maps the repository to its product scope, operating gates, operating boundaries, and risk controls.
-
-## Architecture Notes
-
-- [Architecture guide](docs/architecture-evidence-map.md) summarizes the system scope, first files to inspect, runtime commands, and known boundaries.
-- [Quality notes](docs/quality-gate.md) lists the local checks, CI surface, and release expectations for this repository.
-- [Enterprise readiness notes](docs/enterprise-readiness.md) outlines security, data, operations, integration, and handoff expectations.
-
-## Why
-
-The JavaScript/TypeScript ecosystem has stage-pilot, LangChain.js, AI SDK. The Python ecosystem has stage-pilot, LangGraph, CrewAI. The Go ecosystem, as of April 2026, has fragmented options and few patterns focused on **reliability** and **determinism** at the tool-call boundary.
-
-This repository fills that gap. It's:
-
-- **Go-native**: idiomatic Go, no generated code.
-- **Minimal**: ~1200 LOC core; reads in an afternoon.
-- **Production-grade**: strong typing at tool boundaries, retry with backoff, structured logging, OpenTelemetry traces.
-- **Pluggable**: same Runner interface across Anthropic, OpenAI, Bedrock, custom endpoints.
-- **Reliable**: deterministic replay of tool calls for testing; benchmarked at 90%+ tool-call success rate on agent-orchestration-benchmark.
-
-## What it does
-
-Given a user prompt and a set of tools:
-
-1. Calls the LLM with the prompt + tool schemas.
-2. Parses the LLM response into structured tool calls (with JSON-in-markdown tolerance).
-3. Validates arguments against each tool's schema.
-4. Executes tools with configurable timeout + circuit breaker.
-5. Feeds results back to the LLM.
-6. Loops until the LLM emits a final answer (or hits max-step limit).
-
-## Quick start
-
-### Verify the runtime
 
 ```bash
 git clone https://github.com/KIM3310/agent-runtime-go.git
@@ -88,6 +39,31 @@ make verify
 make GO=/path/to/go verify
 ```
 
+The local gate runs every Go package, including the command-line benchmark harness and public-site contract tests.
+
+## What It Does
+
+Given a prompt and a registered set of tools, the runner:
+
+1. sends the conversation and sorted tool schemas to a provider;
+2. retries only errors allowed by the configured retry policy;
+3. validates every requested tool and its arguments;
+4. executes each tool within a bounded context;
+5. returns the tool result to the provider; and
+6. stops on a final answer, timeout, provider error, or maximum-step limit.
+
+```text
+Prompt
+  |
+  v
+Runner -----> Provider (Anthropic, OpenAI-compatible, or mock)
+  ^                    |
+  |                    v
+  +---- tool result <- schema validation <- tool call
+```
+
+## Quick Start
+
 ```go
 package main
 
@@ -96,33 +72,30 @@ import (
     "fmt"
     "os"
 
-    "github.com/KIM3310/agent-runtime-go/runtime"
     "github.com/KIM3310/agent-runtime-go/providers/anthropic"
+    "github.com/KIM3310/agent-runtime-go/runtime"
 )
 
 func main() {
     provider := anthropic.New(os.Getenv("ANTHROPIC_API_KEY"))
-
-    tools := []runtime.Tool{
-        {
-            Name:        "get_weather",
-            Description: "Get current weather for a city",
-            InputSchema: map[string]any{
-                "type": "object",
-                "properties": map[string]any{
-                    "city": map[string]any{"type": "string"},
-                },
-                "required": []string{"city"},
+    tool := runtime.Tool{
+        Name: "get_weather",
+        InputSchema: map[string]any{
+            "type": "object",
+            "properties": map[string]any{
+                "city": map[string]any{"type": "string"},
             },
-            Handler: func(ctx context.Context, args map[string]any) (any, error) {
-                city, _ := args["city"].(string)
-                return map[string]string{"city": city, "temp": "18C", "condition": "clear"}, nil
-            },
+            "required": []string{"city"},
+        },
+        Handler: func(_ context.Context, args map[string]any) (any, error) {
+            return map[string]any{
+                "city": args["city"], "temp": "18C", "condition": "clear",
+            }, nil
         },
     }
 
-    runner := runtime.NewRunner(provider, runtime.WithTools(tools))
-    result, err := runner.Run(context.Background(), "What's the weather in Seoul?")
+    runner := runtime.NewRunner(provider, runtime.WithTool(tool))
+    result, err := runner.Run(context.Background(), "Weather in Seoul?")
     if err != nil {
         panic(err)
     }
@@ -130,192 +103,73 @@ func main() {
 }
 ```
 
-## Architecture
+## Runtime Contracts
 
-```
-                     ┌──────────────┐
-User prompt ────────▶│    Runner    │◀── Config (max_steps, timeout, ...)
-                     └──────┬───────┘
-                            │
-         ┌──────────────────┼──────────────────┐
-         ▼                  ▼                  ▼
-   ┌──────────┐     ┌──────────────┐   ┌──────────────┐
-   │ Provider │     │ Tool Parser  │   │ Tool Dispatcher │
-   └─────┬────┘     └──────┬───────┘   └───────┬──────┘
-         │                 │                   │
-         ▼                 ▼                   ▼
-   Anthropic API   Parses LLM output   Validates args,
-   OpenAI API      for tool_use        executes tool,
-   Bedrock         blocks              handles timeout
-```
+### Retry semantics
 
-## Design decisions
+`RetryPolicy.MaxAttempts` is the total number of provider calls, including the first call. Values below one are treated as one attempt. The default policy permits up to five calls for rate-limit and transient server errors.
 
-### Why Go?
+### Determinism
 
-- **Ops teams run Go services**. Many enterprises deploy agents as Go binaries alongside their existing services (K8s controllers, proxies, CLI tools).
-- **Static typing at boundaries**: tool schemas validated at compile time (via codegen) or at first call (via runtime reflection).
-- **Startup time matters**: Go binary starts in ms; Python cold-start for serverless agents can exceed 1s.
-- **Resource footprint**: single-binary deployment; no GC tuning overhead of JVM; no interpreter overhead of Python.
+Registered tools are sorted by name before every provider request. Mock fixtures make the runner loop reproducible in tests. Live model output is inherently provider-dependent, so this repository does not claim byte-identical replay of real API responses.
 
-### Why minimal?
+### Tool timing
 
-Smaller surface area = smaller attack surface = smaller maintenance burden. Production deployments can audit 1200 LOC; they can't audit 120,000 LOC.
+`ToolCallRecord.Duration` measures the individual tool execution. `RunResult.Duration` measures the complete run.
 
-### Why deterministic replay?
-
-Production incidents need reproducible debugging. Given the same prompt + tool fixtures + LLM response, the runner produces byte-identical tool calls. No hidden non-determinism from map iteration order, goroutine scheduling, or timestamp injection.
-
-## Provider interface
+### Provider interface
 
 ```go
 type Provider interface {
+    Name() string
     Generate(ctx context.Context, req Request) (Response, error)
-    // GenerateStream optional; returns ErrNotSupported if provider can't stream
-    GenerateStream(ctx context.Context, req Request) (<-chan Event, error)
 }
 ```
 
-Implementations:
-- `providers/anthropic` — Anthropic API (Claude Sonnet, Haiku, Opus)
-- `providers/openai` — OpenAI API and OpenAI-compatible endpoints such as OpenRouter
-- `providers/bedrock` — AWS Bedrock (Claude via Bedrock)
-- `providers/mock` — for testing; deterministic fixtures
+Implemented adapters:
 
-## Tool registration
+- [`providers/anthropic`](providers/anthropic)
+- [`providers/openai`](providers/openai), including OpenAI-compatible endpoints
+- [`providers/mock`](providers/mock) for credential-free tests
 
-Two patterns:
+`StreamingProvider` is an extension interface in the type surface. The current runner uses synchronous `Generate`; streaming orchestration is not implemented yet.
 
-### 1. Plain struct (fast to write):
+## Benchmark Boundary
 
-```go
-tool := runtime.Tool{
-    Name:        "query_sql",
-    Description: "Execute a read-only SQL query",
-    InputSchema: map[string]any{...},
-    Handler: func(ctx context.Context, args map[string]any) (any, error) {
-        sql, _ := args["sql"].(string)
-        return executeQuery(sql)
-    },
-}
-```
-
-### 2. Typed handler (compile-time safety):
-
-```go
-type QueryArgs struct {
-    SQL     string `json:"sql" jsonschema:"required"`
-    Timeout int    `json:"timeout_seconds"`
-}
-
-type QueryResult struct {
-    Rows  []map[string]any `json:"rows"`
-    Count int              `json:"count"`
-}
-
-tool := runtime.TypedTool[QueryArgs, QueryResult]{
-    Name:        "query_sql",
-    Description: "Execute a read-only SQL query",
-    Handler: func(ctx context.Context, args QueryArgs) (QueryResult, error) {
-        return executeQuery(args.SQL, args.Timeout)
-    },
-}
-```
-
-Typed tools generate the JSON Schema at compile time via `go generate`.
-
-## Comparison to alternatives
-
-| Feature | agent-runtime-go | LangChain Go | langchaingo | ollama-go |
-|---------|------------------|--------------|-------------|-----------|
-| Tool-call validation | Built-in | Partial | Partial | No |
-| Deterministic replay | Yes | No | No | No |
-| Multi-provider | Yes | Yes | Yes | Ollama only |
-| Bench on agent-orchestration-benchmark | Yes (90%+) | Yes | Partial | No |
-| LOC | ~1200 | ~15K | ~10K | ~3K |
-| OpenTelemetry | First-class | Partial | Partial | No |
-
-## Running the benchmark
+[`cmd/bench-runner`](cmd/bench-runner) reads the schema used by `agent-orchestration-benchmark` and exercises the runtime with the deterministic mock state machine. It is useful for fixture compatibility and scoring-pipeline checks. It is not a live-provider quality benchmark and does not support a model-performance claim.
 
 ```bash
-# Requires ANTHROPIC_API_KEY, OPENAI_API_KEY, or OPENROUTER_API_KEY
-go test -v -run TestAgentOrchestrationBenchmark ./tests/
-
-# Against the formal benchmark suite
 go run ./cmd/bench-runner \
-    --fixture-set ../agent-orchestration-benchmark/fixtures/benchmark_prompts.jsonl \
-    --output bench-results.json
+  -fixtures ../agent-orchestration-benchmark/fixtures/benchmark_prompts.jsonl \
+  -output bench-results.json
 ```
 
-## Observability
+## Current Limits
 
-All operations emit OpenTelemetry spans:
+- No AWS Bedrock adapter.
+- No circuit breaker.
+- No OpenTelemetry or Prometheus instrumentation.
+- No generated typed-tool API.
+- No streaming execution path in `Runner`.
+- No claim of production readiness without deployment-specific identity, secrets, monitoring, persistence, and recovery controls.
 
-- `runtime.Runner.Run` — top-level
-- `provider.{name}.Generate` — per LLM call
-- `tool.{name}.Execute` — per tool call
-- `runtime.parse_tool_calls` — parsing step
+These are extension points, not hidden capabilities.
 
-Attributes include: `runtime.step_count`, `runtime.tool_call_attempt_count`, `llm.input_tokens`, `llm.output_tokens`, `tool.success_or_error`.
+## Architecture Notes
 
-Metrics emitted to Prometheus via `metrics/` package:
-- `agent_runtime_step_count`
-- `agent_runtime_tool_call_total{tool_name, outcome}`
-- `agent_runtime_llm_latency_seconds`
-
-## Related projects
-
-| Repo | Relationship |
-|------|-------------|
-| [stage-pilot](https://github.com/KIM3310/stage-pilot) | TypeScript sibling. Same design philosophy; different language. |
-| [agent-orchestration-benchmark](https://github.com/KIM3310/agent-orchestration-benchmark) | Benchmark suite; agent-runtime-go is scored alongside LangGraph, CrewAI, AutoGen. |
-| [claude-agent-cookbook](https://github.com/KIM3310/claude-agent-cookbook) | Python cookbook; Go port patterns to be added in `examples/` |
-| [claude-production-patterns](https://github.com/KIM3310/claude-production-patterns) | Production patterns referenced in runtime/circuit_breaker.go |
-
-## License
-
-MIT.
-
-## Cloud + AI Architecture
-
-- [Cloud + AI architecture blueprint](docs/cloud-ai-architecture.md)
+- [Architecture pack](docs/architecture-pack.md)
+- [Architecture evidence map](docs/architecture-evidence-map.md)
+- [Quality gate](docs/quality-gate.md)
+- [Enterprise readiness boundary](docs/enterprise-readiness.md)
+- [Cloud + AI architecture](docs/cloud-ai-architecture.md)
 - [Machine-readable architecture manifest](docs/architecture/blueprint.json)
 - Validation command: `python3 scripts/validate_architecture_blueprint.py`
 
-## Enterprise Productization
+## Related Work
 
-- [Product operating model](docs/product-operating-model.md) defines the product scope, trust boundary, operating checks, and service path for this repository.
+- [stage-pilot](https://github.com/KIM3310/stage-pilot): TypeScript reliability lab and attributed parser baseline.
+- [agent-orchestration-benchmark](https://github.com/KIM3310/agent-orchestration-benchmark): fixture and scoring schema used by the mock harness.
 
-## System Architecture
+## License
 
-- [System architecture](docs/system-architecture.md) maps the runtime boundary, data/control flow, cloud or local deployment surface, and operating assumptions for this repository.
-
-## Service Architecture
-
-- [Service architecture](docs/service-architecture.md) defines the cloud resources, account information, cost controls, and production guardrails needed to turn this repo into a scoped service without publishing public financial assumptions.
-
-<!-- search-growth-readme:start -->
-
-## Search And Service Surface
-
-- Public entry: open-source runtime plus quickstart examples
-- Paid boundary: fixed-scope Agent Reliability Audit for private scenario suites, trace review, failure taxonomy, provider scorecard, and prioritized remediation plan
-- Canonical URL: https://agent-runtime-go.pages.dev/
-- Lead capture: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go&inquiry=agent-reliability-audit#private-inquiry
-- Resource route: https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/
-- Commercial route: https://kim3310-doeon-kim-portfolio.pages.dev/?offer=agent-runtime-go#service-offers
-- Machine-readable offer: [docs/service-offer.json](docs/service-offer.json)
-- Search growth implementation: [docs/search-growth-implementation.md](docs/search-growth-implementation.md)
-- Revenue architecture: [docs/revenue-architecture.md](docs/revenue-architecture.md)
-
-<!-- search-growth-readme:end -->
-
-<!-- KIM3310:AD-DATA-PIVOT:START -->
-## Free Resource, Advertising, and Aggregate Data
-
-- [Public utility and architecture checklist](https://kim3310-doeon-kim-portfolio.pages.dev/resources/agent-runtime-go/)
-- Revenue model: contextual advertising on the policy-eligible central resource page.
-- Aggregate value: anonymous aggregate runtime reliability topic interest and checklist usage counts
-- Boundary: ads allowed only on public runtime explainer and checklist pages; trace viewers, tool execution, and diagnostics are ad-free
-- Consent defaults off, DNT/GPC fail closed, and personal or sensitive data is never sold.
-<!-- KIM3310:AD-DATA-PIVOT:END -->
+MIT. See [LICENSE](LICENSE).

@@ -13,7 +13,7 @@ This note defines what an enterprise stakeholder, public-sector operator, seriou
 | Primary reader | Go backend/platform teams embedding agent execution inside services. |
 | Core wedge | Compact Go-native agent runtime with bounded tool execution and provider adapters. |
 | Stack | Go |
-| Readiness posture | Pilot-ready technical surface; production use requires customer-specific identity, monitoring, data, and support controls. |
+| Readiness posture | Reference implementation; production use requires identity, monitoring, persistence, recovery, data, and support controls. |
 
 ## Enterprise Controls
 
@@ -59,12 +59,12 @@ This note defines what an enterprise stakeholder, public-sector operator, seriou
 
 - go test ./... passes
 - Architecture pack is current
-- Benchmark path is documented
+- Mock fixture-harness boundary is documented
 
 ## Operating Metrics
 
 - Tool-call success
-- Timeout/circuit-breaker coverage
+- Retry, schema-validation, and timeout coverage
 - Integration time
 
 ## Open Risks

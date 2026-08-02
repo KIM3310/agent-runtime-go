@@ -8,9 +8,9 @@
 Repository: `agent-runtime-go`
 Last updated: 2026-06-03 KST
 
-## Enterprise Product Position
+## Technical Position
 
-A minimal, production-grade LLM agent orchestration runtime in Go. Deterministic tool-calling, retry with backoff, pluggable LLM providers, streaming-ready. Companion to stage-pilot (TypeScript) in the same design family
+A small Go reference implementation for LLM tool orchestration with schema validation, bounded retries, provider adapters, and deterministic mock fixtures. It is a companion experiment to stage-pilot (TypeScript), not a hosted runtime or production-readiness claim.
 
 This repository is packaged as a concrete system surface, not a loose code sample. The enterprise value is a narrow proof that can be inspected, run, tested, and converted into a scoped implementation motion.
 
