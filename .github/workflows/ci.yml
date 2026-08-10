@@ -19,6 +19,16 @@ jobs:
           go-version: "1.26.5"
           cache: true
 
+      - name: Check formatting
+        shell: bash
+        run: |
+          set -euo pipefail
+          unformatted="$(gofmt -l .)"
+          if [[ -n "$unformatted" ]]; then
+            printf 'Go files are not gofmt-formatted:\n%s\n' "$unformatted"
+            exit 1
+          fi
+
       - name: Verify
         run: go vet ./...
 

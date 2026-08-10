@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	DefaultBaseURL   = "https://api.anthropic.com/v1"
+	DefaultBaseURL    = "https://api.anthropic.com/v1"
 	DefaultAPIVersion = "2023-06-01"
 )
 
@@ -109,26 +109,26 @@ func (p *Provider) Generate(ctx context.Context, req runtime.Request) (runtime.R
 
 // messageRequest is the payload for Anthropic Messages API.
 type messageRequest struct {
-	Model     string               `json:"model"`
-	MaxTokens int                  `json:"max_tokens"`
-	Messages  []anthropicMessage   `json:"messages"`
-	System    string               `json:"system,omitempty"`
-	Tools     []anthropicTool      `json:"tools,omitempty"`
+	Model     string             `json:"model"`
+	MaxTokens int                `json:"max_tokens"`
+	Messages  []anthropicMessage `json:"messages"`
+	System    string             `json:"system,omitempty"`
+	Tools     []anthropicTool    `json:"tools,omitempty"`
 }
 
 type anthropicMessage struct {
-	Role    string `json:"role"`
+	Role    string             `json:"role"`
 	Content []anthropicContent `json:"content"`
 }
 
 type anthropicContent struct {
-	Type       string          `json:"type"`
-	Text       string          `json:"text,omitempty"`
-	ID         string          `json:"id,omitempty"`
-	Name       string          `json:"name,omitempty"`
-	Input      map[string]any  `json:"input,omitempty"`
-	ToolUseID  string          `json:"tool_use_id,omitempty"`
-	Content    string          `json:"content,omitempty"`
+	Type      string         `json:"type"`
+	Text      string         `json:"text,omitempty"`
+	ID        string         `json:"id,omitempty"`
+	Name      string         `json:"name,omitempty"`
+	Input     map[string]any `json:"input,omitempty"`
+	ToolUseID string         `json:"tool_use_id,omitempty"`
+	Content   string         `json:"content,omitempty"`
 }
 
 type anthropicTool struct {

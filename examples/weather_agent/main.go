@@ -1,7 +1,8 @@
 // Example: weather agent using agent-runtime-go with mock provider.
 //
 // Run:
-//   go run ./examples/weather_agent
+//
+//	go run ./examples/weather_agent
 package main
 
 import (
