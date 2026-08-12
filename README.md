@@ -2,7 +2,6 @@
 
 A small, auditable Go prototype for LLM tool orchestration. It keeps the control loop explicit: provider calls, JSON-schema validation, bounded retries, tool timeouts, and deterministic test fixtures.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/KIM3310/agent-runtime-go.svg)](https://pkg.go.dev/github.com/KIM3310/agent-runtime-go)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Go 1.26.5+](https://img.shields.io/badge/go-1.26.5%2B-blue.svg)](https://go.dev/)
 
