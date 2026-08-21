@@ -1,4 +1,6 @@
-# agent-runtime-go
+# Agent Runtime Go
+
+[![CI](https://github.com/KIM3310/agent-runtime-go/actions/workflows/ci.yml/badge.svg)](https://github.com/KIM3310/agent-runtime-go/actions/workflows/ci.yml)
 
 A small, auditable Go prototype for LLM tool orchestration. It keeps the control loop explicit: provider calls, JSON-schema validation, bounded retries, tool timeouts, and deterministic test fixtures.
 
