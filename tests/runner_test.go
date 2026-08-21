@@ -366,6 +366,50 @@ func TestUnknownTool(t *testing.T) {
 	}
 }
 
+func TestArgValidationRejectsFractionalInteger(t *testing.T) {
+	provider := mock.New("fractional_integer", []runtime.Response{
+		{
+			Text: "calling with fractional integer",
+			ToolCalls: []runtime.ToolCall{
+				{ID: "1", Name: "integer_tool", Arguments: map[string]any{"count": 1.5}},
+			},
+			StopReason: "tool_use",
+		},
+		{Text: "Final answer after validation error", StopReason: "end_turn"},
+	})
+
+	handlerCalled := false
+	tool := runtime.Tool{
+		Name: "integer_tool",
+		InputSchema: map[string]any{
+			"type": "object",
+			"properties": map[string]any{
+				"count": map[string]any{"type": "integer"},
+			},
+			"required": []string{"count"},
+		},
+		Handler: func(context.Context, map[string]any) (any, error) {
+			handlerCalled = true
+			return "should not reach here", nil
+		},
+	}
+
+	runner := runtime.NewRunner(provider, runtime.WithTool(tool), runtime.WithMaxSteps(5))
+	result, err := runner.Run(context.Background(), "validate integer")
+	if err != nil {
+		t.Fatalf("expected graceful handling, got: %v", err)
+	}
+	if handlerCalled {
+		t.Fatal("tool handler ran with a fractional integer argument")
+	}
+	if len(result.ToolCalls) != 1 {
+		t.Fatalf("tool call count = %d, want 1", len(result.ToolCalls))
+	}
+	if !errors.Is(result.ToolCalls[0].Error, runtime.ErrInvalidArgs) {
+		t.Fatalf("tool call error = %v, want ErrInvalidArgs", result.ToolCalls[0].Error)
+	}
+}
+
 func TestArgValidation(t *testing.T) {
 	provider := mock.New("bad_args", []runtime.Response{
 		{

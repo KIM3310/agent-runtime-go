@@ -1,4 +1,4 @@
-.SHELLFLAGS := -eu -o pipefail -c
+.SHELLFLAGS := -eu -c
 
 GO ?= go
 GO_MIN_VERSION := 1.26.5

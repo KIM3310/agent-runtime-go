@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"fmt"
+	"math"
 )
 
 // validateArgs is a minimal JSON Schema validator.
@@ -74,12 +75,13 @@ func validateType(key string, val any, schema map[string]any) error {
 				return fmt.Errorf("field %s: value %q not in enum", key, valStr)
 			}
 		}
-	case "number", "integer":
-		switch val.(type) {
-		case float64, float32, int, int32, int64:
-			// OK
-		default:
+	case "number":
+		if !isNumber(val) {
 			return fmt.Errorf("field %s: expected number, got %T", key, val)
+		}
+	case "integer":
+		if !isInteger(val) {
+			return fmt.Errorf("field %s: expected integer, got non-integral or unsupported %T", key, val)
 		}
 	case "boolean":
 		if _, ok := val.(bool); !ok {
@@ -110,4 +112,36 @@ func validateType(key string, val any, schema map[string]any) error {
 	}
 
 	return nil
+}
+
+func isNumber(val any) bool {
+	switch number := val.(type) {
+	case float64:
+		return !math.IsNaN(number) && !math.IsInf(number, 0)
+	case float32:
+		return !float32IsNaNOrInf(number)
+	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
+		return true
+	default:
+		return false
+	}
+}
+
+func isInteger(val any) bool {
+	switch number := val.(type) {
+	case float64:
+		return !math.IsNaN(number) && !math.IsInf(number, 0) && math.Trunc(number) == number
+	case float32:
+		converted := float64(number)
+		return !float32IsNaNOrInf(number) && math.Trunc(converted) == converted
+	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
+		return true
+	default:
+		return false
+	}
+}
+
+func float32IsNaNOrInf(number float32) bool {
+	converted := float64(number)
+	return math.IsNaN(converted) || math.IsInf(converted, 0)
 }
