@@ -5,7 +5,7 @@
 A small, auditable Go prototype for LLM tool orchestration. It keeps the control loop explicit: provider calls, JSON-schema validation, bounded retries, tool timeouts, and deterministic test fixtures.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Go 1.26.5+](https://img.shields.io/badge/go-1.26.5%2B-blue.svg)](https://go.dev/)
+[![Go 1.26.7+](https://img.shields.io/badge/go-1.26.7%2B-blue.svg)](https://go.dev/)
 
 Public demo: [agent-runtime-go.pages.dev](https://agent-runtime-go.pages.dev/)
 
@@ -27,7 +27,7 @@ This is an inspectable reference implementation, not a hosted production runtime
 1. Read [`runtime/runner.go`](runtime/runner.go) for the complete orchestration loop.
 2. Read [`runtime/retry.go`](runtime/retry.go) for the retry contract: `MaxAttempts` means total provider calls.
 3. Read [`tests/runner_test.go`](tests/runner_test.go) for step-limit, schema, retry, timing, and tool-order coverage.
-4. Run `make verify` with Go 1.26.5 or newer.
+4. Run `make verify` with Go 1.26.7 or newer.
 
 ## Evaluation Path
 
