@@ -1,7 +1,7 @@
 .SHELLFLAGS := -eu -c
 
 GO ?= go
-GO_MIN_VERSION := 1.26.5
+GO_MIN_VERSION := 1.26.7
 
 .PHONY: check-go test verify deploy-pages
 

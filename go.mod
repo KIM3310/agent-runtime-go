@@ -1,3 +1,3 @@
 module github.com/KIM3310/agent-runtime-go
 
-go 1.26.5
+go 1.26.7
